@@ -1,7 +1,8 @@
-## Windows Scripts
+## RZA1 Batch Flash Loader
 
-### Branches
+### Supported Flash
 
-- **JLink Batch Programmer**
-
-- **Youtube Downloader**
+- NOR Flash
+- Serial Flash Channel 0
+- Serial Flash Channel 1( RZA2M/H only) - In progress
+- MMC Flash Loader
