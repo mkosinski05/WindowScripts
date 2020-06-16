@@ -56,15 +56,19 @@
 
     echo Programming OPTIONS
     echo 1 = Program NOR user application.
-    echo 2 = Program QSPI user application.
-    echo 3 = Program MMC user application.
-    echo 4 = Exit
-    SET /P ProgrammerChoice=Choose options (1=NOR , 2=QSPI, 3=MMC or 4=Exit): 
+    echo 2 = Program QSPI Channel 0 boot.
+	echo 3 = Program QSPI Channel 0 user application.
+	echo 4 = Program QSPI Channel 1 user application.
+    echo 5 = Program MMC user application.
+    echo 6 = Exit
+    SET /P ProgrammerChoice=Choose options (1=NOR 2=QSPI_boot 3=QSPI0 4=QSPI1 5=MMC or 6=Exit): 
     echo selected file %progdir%\%SelectedFile%
 
     if "%ProgrammerChoice%"=="1" goto :NOR_Prog
-    if "%ProgrammerChoice%"=="2" goto :QSPI_Prog
-    if "%ProgrammerChoice%"=="3" goto :MMC_Prog
+    if "%ProgrammerChoice%"=="2" goto :QSPI_Prog_Boot
+	if "%ProgrammerChoice%"=="3" goto :QSPI_Prog_Ch0
+	if "%ProgrammerChoice%"=="4" goto :QSPI_Prog_Ch1
+    if "%ProgrammerChoice%"=="5" goto :MMC_Prog
     echo No programmer Selected
     goto :CLEAN_UP	
 
@@ -75,8 +79,24 @@
     echo exit >> LoadUser.Command
     %programmer% -speed 12000 -if JTAG -device R7S721001 -CommanderScript LoadUser.Command
     goto :CLEAN_UP
-
-:QSPI_Prog
+	
+:QSPI_Prog_Boot
+    echo QSPI Programmer
+    echo Remove power (5V) to the board before continuing. 
+    echo Set SW6 as instructed below:
+    echo SW6-1 OFF, SW6-2 ON, SW6-3 OFF, SW6-4 ON, SW6-5 ON, SW6-6 ON
+    echo Reconnect power (5V) to the board before continuing. 
+    pause
+    echo ENSURE YOU HAVE RECONFIGURED THE SW6 SWITCHES ON THE TARGET
+    echo - IT IS IMPORTANT -
+    pause
+    copy /y %toolsdir%\LoadUserQSPITemplate.Command LoadUser.Command
+    echo loadbin %progdir%\%SelectedFile%,0x18000000>>LoadUser.Command
+    echo exit >> LoadUser.Command
+    %programmer% -speed 12000 -if JTAG -device R7S721001_DualSPI -CommanderScript LoadUser.Command
+    goto :CLEAN_UP
+	
+:QSPI_Prog_Ch0
     echo QSPI Programmer
     echo Remove power (5V) to the board before continuing. 
     echo Set SW6 as instructed below:
@@ -92,6 +112,22 @@
     %programmer% -speed 12000 -if JTAG -device R7S721001_DualSPI -CommanderScript LoadUser.Command
     goto :CLEAN_UP
 
+:QSPI_Prog_Ch1
+    echo QSPI Programmer
+    echo Remove power (5V) to the board before continuing. 
+    echo Set SW6 as instructed below:
+    echo SW6-1 OFF, SW6-2 ON, SW6-3 OFF, SW6-4 ON, SW6-5 ON, SW6-6 ON
+    echo Reconnect power (5V) to the board before continuing. 
+    pause
+    echo ENSURE YOU HAVE RECONFIGURED THE SW6 SWITCHES ON THE TARGET
+    echo - IT IS IMPORTANT -
+    pause
+    copy /y %toolsdir%\LoadUserQSPITemplate.Command LoadUser.Command
+    echo loadbin %progdir%\%SelectedFile%,0x1C000000>>LoadUser.Command
+    echo exit >> LoadUser.Command
+    %programmer% -speed 12000 -if JTAG -device R7S721001_DualSPI -CommanderScript LoadUser.Command
+    goto :CLEAN_UP
+	
 :MMC_Prog
     echo MMC Programmer
 
