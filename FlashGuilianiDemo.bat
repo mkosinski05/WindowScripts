@@ -31,7 +31,16 @@ exit
 
 rem <> extract the version number from the path
 set MINJVER=V600
-set JVER=%BASE:~-4%
+set num=%BASE:~-1%
+echo %num%| findstr /r "^[1-9][0-9]*$">nul
+if %errorlevel% equ 0 (
+	set JVER=%BASE:~-4%
+) else (
+	set JVER=%BASE:~-5%
+	set JVER=%JVER:~0,~1%
+	
+)
+
 
 echo Your JLINK Version is %JVER%
 echo Minimum JLINK Version is %MINJVER%
