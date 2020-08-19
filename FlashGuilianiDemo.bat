@@ -41,7 +41,6 @@ if %errorlevel% equ 0 (
 	
 )
 
-
 echo Your JLINK Version is %JVER%
 echo Minimum JLINK Version is %MINJVER%
 echo.
