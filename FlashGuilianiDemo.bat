@@ -31,13 +31,16 @@ exit
 
 rem <> extract the version number from the path
 set MINJVER=V600
-set num=%BASE:~-1%
+set num=%BASE:~-3%
 echo %num%| findstr /r "^[1-9][0-9]*$">nul
+
 if %errorlevel% equ 0 (
 	set JVER=%BASE:~-4%
+	echo %JVER%
 ) else (
-	set JVER=%BASE:~-5%
-	set JVER=%JVER:~0,~1%
+	set JVER=%BASE:~-4%
+	echo %JVER%
+	set JVER=%JVER:~0,-1%
 	
 )
 
