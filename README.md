@@ -4,10 +4,10 @@
 
 ​	Python v3.6 or higher
 
-​	PyTube3 v10
+​	PyTube
 
 ```
-pip install pytube==10.4.1
+pip install pytube
 ```
 
 
@@ -29,6 +29,18 @@ python youtubeDownloader.py myURLtoPlayList -l
 or
 python youtubeDownloader.py myURLtoPlayList -list
 ```
+
+##### Specifiy download folder
+
+```
+python youtubeDownloader.py myURLtoPlayList -v -d ../tmp
+or for lists
+python youtubeDownloader.py myURLtoPlayList -l -d ../tmp
+```
+
+### You Tube Updates
+
+Youtube may update their Youtube API which may break pytube. The Pytube community is constantly updating the software so it works with the youtube api. If the script stops working please download the latest pytube. If the latest does not work you may need to wait a few days for pytube to apply the fix. 
 
 ##### Error: Cypher
 
